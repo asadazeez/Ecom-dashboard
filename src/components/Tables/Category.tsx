@@ -33,7 +33,7 @@ const Category = ({categoryList}:Props) => {
   return (
     <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
       <div className="text-lg font-extrabold flex justify-between dark:text-white text-black mb-4">Category
-       <Link href={"/forms/category-form/add/"} > <button className="bg-black py-1 dark:bg-white rounded-lg dark:text-black text-white text-base font-medium px-5">Add Category</button></Link>
+       <Link href={"/admin/forms/category-form/add/"} > <button className="bg-black py-1 dark:bg-white rounded-lg dark:text-black text-white text-base font-medium px-5">Add Category</button></Link>
       </div>
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
@@ -75,7 +75,7 @@ const Category = ({categoryList}:Props) => {
                 >
                   <div className="flex items-center justify-end space-x-3.5">
                     <button className="hover:text-primary">
-                      <Link href={`/forms/category-form/${categoryItem._id}`}>
+                      <Link href={`/admin/forms/category-form/${categoryItem._id}`}>
                     <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"

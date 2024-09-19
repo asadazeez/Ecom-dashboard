@@ -32,7 +32,7 @@ if(deleteBanner.data.success){
   return (
     <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
        <div className="text-lg font-extrabold flex justify-between dark:text-white text-black mb-4">Banner
-       <Link href={"/forms/banner-form/add"}>  <button className="bg-black dark:bg-white rounded-lg dark:text-black text-white text-base py-1 font-medium px-5">Add Banner</button></Link>
+       <Link href={"/admin/forms/banner-form/add"}>  <button className="bg-black dark:bg-white rounded-lg dark:text-black text-white text-base py-1 font-medium px-5">Add Banner</button></Link>
       </div>
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
@@ -79,7 +79,7 @@ if(deleteBanner.data.success){
                 >
                   <div className="flex items-center justify-end space-x-3.5">
                   <button className="hover:text-primary">
-                  <Link href={`/forms/banner-form/${Item._id}`}>
+                  <Link href={`/admin/forms/banner-form/${Item._id}`}>
                     <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"

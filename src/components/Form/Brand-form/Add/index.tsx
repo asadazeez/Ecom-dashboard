@@ -1,31 +1,47 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { useForm } from "react-hook-form";
+import { useForm,Controller } from "react-hook-form";
 import {  z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { brandApi } from "@/api/brandApi";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { serialize } from "object-to-formdata";
+import FileUploaderSingle from "@/components/FormElements/FileUpload/fileUploaderSingle";
+import Typography from '@mui/material/Typography'
+import DropzoneWrapper from "@/components/styles/react-dropzone";
+
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 const Schema = z.object({
-  name: z.string().nonempty({ message: "*Required" }),
-  description: z.string().nonempty({ message: "*Required" }),
-  imageFile: z.any(),
+  name:z
+  .string().trim().min(1, {message:'Minimum one character required'}).nonempty({message:"*Required"}),
+  description: z.string(),
+  imageFile: z
+  .any()
+  .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+  .refine(
+    (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+    "Only .jpg, .jpeg, .png and .webp formats are supported."
+  )
 });
+
 type TSchema = z.infer<typeof Schema>;
 const BrandForm = () => {
   const router = useRouter()
   
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<TSchema>({ resolver: zodResolver(Schema) });
 
   const submitData = async (data:any) => {
     try{
-      const formdata = serialize({...data, imageFile:data.imageFile[0]})
+      const formdata = serialize(data)
+      
 
       
       const response = await brandApi.createBrand(formdata)
@@ -35,7 +51,7 @@ const BrandForm = () => {
       if (response.data.success) {
         toast.success(response.data.message)
         
-        router.push('/tables/brand')
+        router.push('/admin/tables/brand')
         router.refresh()
       }
     }catch(errors:any){
@@ -73,39 +89,40 @@ toast.error(errors.message)
                 </div>
 
                 <div>
-                  <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
-                    BRAND DESCRIPTION
-                  </label>
-                  <input
-                    type="text"
-                    {...register("description")}
-                    placeholder="Brand Description"
-                    className="w-full rounded-[7px] border-[1.5px] border-primary bg-transparent px-5 py-3 text-dark outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-gray-2 dark:bg-dark-2 dark:text-white"
-                  />
-                  <p className="text-xs text-red-700">
-                    {errors.description?.message}
-                  </p>
-                </div>
+                <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
+                BRAND DESCRIPTION
+                </label>
+                <textarea
+                 {...register('description')}
+                  rows={6}
+                  placeholder="Brand Description"
+                  className="w-full rounded-[7px] border-[1.5px] border-stroke bg-transparent px-5.5 py-3 text-dark outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-gray-2 dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+                ></textarea>
+                 <p className="text-red-700 text-xs">{errors.description?.message}</p>
+              </div>
 
-                <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
-                  <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
-                    <h3 className="font-medium text-dark dark:text-white">
-                      File upload
-                    </h3>
-                  </div>
-                  <div className="flex flex-col gap-5.5 p-6.5">
-                    <div>
-                      <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
-                        Attach file
-                      </label>
-                      <input
-                      {...register('imageFile')}
-                        type="file"
-                        className="w-full cursor-pointer rounded-[7px] border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-[#E2E8F0] file:px-6.5 file:py-[13px] file:text-body-sm file:font-medium file:text-dark-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-dark dark:border-dark-3 dark:bg-dark-2 dark:file:border-dark-3 dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                      />
-                    </div>
-                  </div>
-                </div>
+                <DropzoneWrapper>
+                  <Typography variant='h6' sx={{ mb: 2.5 }}>
+                    Image:
+                    {!!errors.imageFile && (
+                      <span style={{ color: 'red', fontSize: '14px' }}>Invalid Image format {!!errors.imageFile}</span>
+                    )}
+                  </Typography>
+                  <Controller
+                    name='imageFile'
+                    control={control}
+                    defaultValue=''
+                    render={({ field }) => (
+                      <div>
+                        <FileUploaderSingle file={field.value} setFile={field.onChange} error={errors.imageFile} />
+                      </div>
+                    )}
+                  />
+                </DropzoneWrapper>
+                <p className="text-red-700 text-xs">{errors.imageFile?.message?.toString()}</p>
+
+
+
                     <button
                       type="submit"
                       className=" w-fit rounded-md bg-black px-6 py-1 font-semibold text-white dark:bg-white dark:text-black"

@@ -24,7 +24,7 @@ export default function RootLayout({
     const localStorage = window.localStorage.getItem("accessToken")
 
 if (!localStorage && !cookies) {
-  router.push("/pages/login")
+  router.push("/admin/pages/login")
   
 } 
    setTimeout(() => setLoading(false), 1000);

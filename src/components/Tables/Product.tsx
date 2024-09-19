@@ -41,7 +41,7 @@ const Product = ({ productList }: Props) => {
     <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
       <div className="mb-4 flex justify-between text-lg font-extrabold text-black dark:text-white">
         Products
-        <Link href={"/forms/product-form/add"}>
+        <Link href={"/admin/forms/product-form/add"}>
           <button className="rounded-lg py-1 bg-black px-5 text-base font-medium text-white dark:bg-white dark:text-black">
             Add Product
           </button>
@@ -138,7 +138,7 @@ const Product = ({ productList }: Props) => {
                 >
                   <div className="flex items-center justify-end space-x-3.5">
                     <button className="hover:text-primary">
-                      <Link href={`/forms/product-form/${productItem._id}`}>
+                      <Link href={`/admin/forms/product-form/${productItem._id}`}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
