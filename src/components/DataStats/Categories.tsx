@@ -34,7 +34,7 @@ const Categories = async () => {
         ))}
 
         <Link href={"/admin/tables/category"}>
-          <div className="  relative mt-21 flex size-31 items-center dark:bg-slate-800 justify-center rounded-full  shadow-3 hover:shadow-6 dark:shadow-2xl ">
+          <div className="  relative mt-21 flex size-31 items-center border-solid border-[1px] dark:bg-slate-800 justify-center rounded-full  shadow-3 hover:shadow-6 dark:shadow-2xl ">
             <div className="w-full text-black dark:text-white text-center text-base font-satoshi font-normal">
               <See className=" mb-1 flex size-8 w-full justify-center" />
               See More!
