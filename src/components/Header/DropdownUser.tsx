@@ -65,7 +65,7 @@ router.push('/admin/pages/login/')
         <div
           className={`absolute right-0 mt-7.5 flex w-[280px] flex-col rounded-lg border-[0.5px] border-stroke bg-white shadow-default dark:border-dark-3 dark:bg-gray-dark`}
         >
-          <div className="flex items-center gap-2.5 px-5 pb-5.5 pt-3.5">
+          <div className="flex items-center gap-2.5  p-2.5">
             <span className="relative block h-12 w-12 rounded-full">
               <Image
                 width={112}
@@ -86,9 +86,7 @@ router.push('/admin/pages/login/')
               <span className="block font-medium text-dark dark:text-white">
                 Admin
               </span>
-              <span className="block font-medium text-dark-5 dark:text-dark-6">
-                asadazeez96@gmail.com
-              </span>
+             
             </span>
           </div>
           <ul className="flex flex-col gap-1 border-y-[0.5px] border-stroke p-2.5 dark:border-dark-3">

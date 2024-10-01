@@ -22,7 +22,7 @@ const TablesPage = async () => {
   const categoryList = categories.data
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Category" />
+      <Breadcrumb pageName="Categories" />
 
       <div className="flex flex-col gap-10">
         

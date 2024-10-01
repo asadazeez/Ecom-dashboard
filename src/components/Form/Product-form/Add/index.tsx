@@ -59,7 +59,7 @@ const ProductForm = ({brands,category}:Props) => {
        if (response.data.success) {
         
        toast.success(response.data.message)
-         router.push("/admin/tables/product")
+         router.push("/admin/products")
          router.refresh()
        }
 
@@ -75,7 +75,7 @@ const ProductForm = ({brands,category}:Props) => {
     
     <>
     
-      <Breadcrumb pageName="PRODUCT FORM" />
+      <Breadcrumb pageName="Product Form" innerPageName="Products /" innerPageLink="/admin//products" />
 
       <div className=" gap-9 sm:grid-cols-2">
         <form onSubmit={handleSubmit(submitData)}>
@@ -125,12 +125,13 @@ const ProductForm = ({brands,category}:Props) => {
                 />
                 <p className="text-red-700 text-xs">{errors.price?.message}</p>
               </div>
+              <div>
               <SelectOne register={register('category')}
-                name="Category" data={category}/>
-                            <p className="text-red-700 text-xs">{errors.category?.message}</p>
-
-            <SelectOne register={register('brands')} name="Brand" data={brands}/>
-            <p className="text-red-700 text-xs">{errors.brands?.message}</p>
+                name="CATEGORY" placeHolder="Category" data={category}/>
+                            <p className="text-red-700 -mt-4 text-xs">{errors.category?.message}</p></div>
+<div>
+            <SelectOne register={register('brands')} name="BRAND" placeHolder="Brand" data={brands}/>
+            <p className="text-red-700 -mt-4 text-xs">{errors.brands?.message}</p></div>
 
 
              
@@ -138,7 +139,7 @@ const ProductForm = ({brands,category}:Props) => {
                   <Typography variant='h6' sx={{ mb: 2.5 }}>
                     Image:
                     {!!errors.imageFile && (
-                      <span style={{ color: 'red', fontSize: '14px' }}>Invalid Image format {!!errors.imageFile}</span>
+                      <span style={{ color: 'red', fontSize: '14px',marginLeft:'2px' }}>Invalid Image format  or Image is Required  {!!errors.imageFile}</span>
                     )}
                   </Typography>
                   <Controller

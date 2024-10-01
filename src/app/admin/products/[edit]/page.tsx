@@ -20,6 +20,7 @@ async function getProductId(id:string){
 
 const FormElementsPage =async ({params}:{params:{edit:string}}) => {
   const products = await getProductId(params.edit)
+
   const product = products.response.data
   const brands = products.response2.data
   const category = products.response3.data

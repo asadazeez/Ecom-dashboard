@@ -48,7 +48,7 @@ const CategoryForm = () => {
           if (response.data.success) {
 toast.success(response.data.message)
             
-            router.push('/admin/tables/category')
+            router.push('/admin/categories')
             router.refresh()
           }
   
@@ -63,7 +63,7 @@ toast.success(response.data.message)
   return (
     
     <>
-      <Breadcrumb pageName="CATEGORY FORM" />
+      <Breadcrumb pageName="Category Form" innerPageName=" Categories /" innerPageLink="/admin/categories/" />
 
       <div className=" gap-9 sm:grid-cols-2">
         <form onSubmit={handleSubmit(submitData)}>
@@ -109,7 +109,7 @@ toast.success(response.data.message)
                   <Typography variant='h6' sx={{ mb: 2.5 }}>
                     Image:
                     {!!errors.imageFile && (
-                      <span style={{ color: 'red', fontSize: '14px' }}>Invalid Image format {!!errors.imageFile}</span>
+                      <span style={{ color: 'red', fontSize: '14px',marginLeft:'2px' }}>Invalid Image format  or Image is Required  {!!errors.imageFile}</span>
                     )}
                   </Typography>
                   <Controller

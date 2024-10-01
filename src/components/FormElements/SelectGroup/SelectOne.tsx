@@ -5,9 +5,10 @@ type Props={
   name:string
   data:any
   register:any
+  placeHolder:string
 }
 
-const SelectOne: React.FC<Props> = ({name,data,register}:Props) => {
+const SelectOne: React.FC<Props> = ({name,data,register,placeHolder }:Props) => {
   
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
@@ -18,8 +19,8 @@ const SelectOne: React.FC<Props> = ({name,data,register}:Props) => {
 
   return (
     <div className="mb-4.5">
-      <label className="mb-3 block text-body-sm text-dark dark:text-white">
-       Select your {name}
+      <label className="mb-3 block font-medium text-body-sm text-dark dark:text-white">
+       SELECT YOUR {name}
       </label>
 
       <div className="relative z-20 bg-transparent dark:bg-dark-2">
@@ -34,7 +35,7 @@ const SelectOne: React.FC<Props> = ({name,data,register}:Props) => {
           }`}
         >
           <option value={""} disabled className="text-dark-6">
-           Select your {name}
+          Select Your {placeHolder}
           </option>
           
           {data.map((item:{_id:string, name:string}, index:any) => (

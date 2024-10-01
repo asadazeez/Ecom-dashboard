@@ -49,7 +49,7 @@ const BannerForm = ({category}:Props) => {
       if (response.data.success) {
         
         toast.success(response.data.message)
-          router.push("/admin/tables/banner")
+          router.push("/admin/banners")
           router.refresh()
         }
     
@@ -62,7 +62,7 @@ toast.error(errors.message)
 
   return (
     <>
-      <Breadcrumb pageName="BANNER FORM" />
+      <Breadcrumb pageName="Banner form" innerPageName="Banners /" innerPageLink="/admin/banners" />
 
       <div className=" gap-9 sm:grid-cols-2">
         <form onSubmit={handleSubmit(submitData)}>
@@ -75,9 +75,10 @@ toast.error(errors.message)
                 </h3>
               </div>
               <div className="flex flex-col gap-5.5 p-6.5">
+                <div>
               <SelectOne register={register('category')}
-                name="Category" data={category}/>
-                                            <p className="text-red-700 text-xs">{errors.category?.message}</p>
+                name="CATEGORY" placeHolder="Category" data={category}/>
+                                            <p className="text-red-700 -mt-4 text-xs">{errors.category?.message}</p></div>
 
               
 
@@ -88,7 +89,7 @@ toast.error(errors.message)
                   <Typography variant='h6' sx={{ mb: 2.5 }}>
                     Image:
                     {!!errors.imageFile && (
-                      <span style={{ color: 'red', fontSize: '14px' }}>Invalid Image format {!!errors.imageFile}</span>
+                      <span style={{ color: 'red', fontSize: '14px',marginLeft:'2px' }}>Invalid Image format  or Image is Required {!!errors.imageFile}</span>
                     )}
                   </Typography>
                   <Controller

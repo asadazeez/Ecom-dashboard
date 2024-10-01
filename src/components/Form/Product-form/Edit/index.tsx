@@ -27,13 +27,16 @@ const Schema = z
     name: z
     .string().trim().min(1, {message:'Minimum one character required'}).nonempty({message:"*Required"}),
       description:z.string(),
-      imageFile: z
-      .any()
-      .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
-      .refine(
-        (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-        "Only .jpg, .jpeg, .png and .webp formats are supported."
-      ),
+      imageFile: z.union([
+        z
+          .any()
+          .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+          .refine(
+            (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+            "Only .jpg, .jpeg, .png and .webp formats are supported.",
+          ),
+        z.string(),
+      ]),
       category:z.string().nonempty({message:"*Required"}),
       brand:z.string().nonempty({message:"*Required"}),
       price:z.coerce.number().positive({message:"*Required"})
@@ -43,7 +46,7 @@ const Schema = z
  type TSchema = z.infer<typeof Schema>;
 const ProductUpdateForm = ({ProductId,product,brands,category}:Props) => {
 
-  
+
 
 
   const router = useRouter()
@@ -58,6 +61,7 @@ const ProductUpdateForm = ({ProductId,product,brands,category}:Props) => {
       
        
       } });
+      console.log('brandss',product)
       const submitData = async (data:any) => {
         try{
 
@@ -68,7 +72,7 @@ const ProductUpdateForm = ({ProductId,product,brands,category}:Props) => {
         
         toast.success(response.data.message)
 
-         router.push("/admin/tables/product")
+         router.push("/admin/products")
          router.refresh()
        }
 
@@ -83,7 +87,7 @@ const ProductUpdateForm = ({ProductId,product,brands,category}:Props) => {
   return (
     
     <>
-      <Breadcrumb pageName="PRODUCT UPDATE FORM" />
+      <Breadcrumb pageName="Product Update Form" innerPageName="Products /" innerPageLink="/admin/products" />
 
       <div className=" gap-9 sm:grid-cols-2">
         <form onSubmit={handleSubmit(submitData)}>
@@ -134,14 +138,16 @@ const ProductUpdateForm = ({ProductId,product,brands,category}:Props) => {
                 />
                 <p className="text-red-700 text-xs">{errors.price?.message}</p>
               </div>
+              <div>
               <SelectOne
               register={register('category')}
-              name="Category"
+              placeHolder="Category"
+              name="CATEGORY"
               data={category}/>
-                              <p className="text-red-700 text-xs">{errors.category?.message}</p>
-
-            <SelectOne register={register('brand')} name="Brand" data={brands} />
-            <p className="text-red-700 text-xs">{errors.brand?.message}</p>
+                              <p className="text-red-700 -mt-4 text-xs">{errors.category?.message}</p></div>
+<div>
+            <SelectOne register={register('brand')} name="BRAND" placeHolder="Brand" data={brands} />
+            <p className="text-red-700 -mt-4 text-xs">{errors.brand?.message}</p></div>
 
 
              
@@ -150,7 +156,7 @@ const ProductUpdateForm = ({ProductId,product,brands,category}:Props) => {
                   <Typography variant='h6' sx={{ mb: 2.5 }}>
                     Image:
                     {!!errors.imageFile && (
-                      <span style={{ color: 'red', fontSize: '14px' }}>Invalid Image format {!!errors.imageFile}</span>
+                      <span style={{ color: 'red', fontSize: '14px',marginLeft:'2px' }}>Invalid Image format  or Image is Required  {!!errors.imageFile}</span>
                     )}
                   </Typography>
                   <Controller

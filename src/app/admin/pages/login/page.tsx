@@ -49,7 +49,7 @@ export default function SigninWithPassword() {
         toast.success(response.data.message)
         window.localStorage.setItem("accessToken",response.data.accessToken)
       Cookies.set("accessToken",response.data.accessToken)
-        router.push('/')
+        router.push('/admin/dashboard/')
         router.refresh()
       }
 

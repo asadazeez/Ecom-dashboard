@@ -26,14 +26,16 @@ const Schema = z
     name:z
     .string().trim().min(1, {message:'Minimum one character required'}).nonempty({message:"*Required"}),
       description:z.string(),
-      imageFile: z
-      .any()
-      .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
-      .refine(
-        (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-        "Only .jpg, .jpeg, .png and .webp formats are supported."
-      )
-
+      imageFile: z.union([
+        z
+          .any()
+          .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+          .refine(
+            (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+            "Only .jpg, .jpeg, .png and .webp formats are supported.",
+          ),
+        z.string(),
+      ]),
   
       })    ;
  type TSchema = z.infer<typeof Schema>;
@@ -64,7 +66,7 @@ const CategoryUpdateForm = ({CategoryId,category}:Props) => {
 toast.success(response.data.message)
 
             
-            router.push('/admin/tables/category')
+            router.push('/admin/categories')
             router.refresh()
           }
   
@@ -79,7 +81,7 @@ toast.success(response.data.message)
   return (
     
     <>
-      <Breadcrumb pageName="CATEGORY UPDATE FORM" />
+      <Breadcrumb pageName="Category Update Form " innerPageName="Categories /" innerPageLink="/admin/categories/" />
 
       <div className=" gap-9 sm:grid-cols-2">
         <form onSubmit={handleSubmit(submitData)}>
@@ -123,7 +125,7 @@ toast.success(response.data.message)
                   <Typography variant='h6' sx={{ mb: 2.5 }}>
                     Image:
                     {!!errors.imageFile && (
-                      <span style={{ color: 'red', fontSize: '14px' }}>Invalid Image format {!!errors.imageFile}</span>
+                      <span style={{ color: 'red', fontSize: '14px' ,marginLeft:'2px'}}>Invalid Image format  or Image is Required  {!!errors.imageFile}</span>
                     )}
                   </Typography>
                   <Controller

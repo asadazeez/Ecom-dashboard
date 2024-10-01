@@ -4,7 +4,9 @@ import { storageUrl } from "@/utilis/baseUrl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import DeleteConfirmation from "../DeleteComponent/DeleteConfirmationPopup";
 
 type Props ={
   brandList:any
@@ -12,6 +14,20 @@ type Props ={
 
 
 const Brand = ({brandList}:Props) => {
+  const [itemId, setItemId] = useState();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const totalPages = Math.ceil(brandList.length / itemsPerPage);
+  const brandData = brandList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
   const router = useRouter()
   
   async function deleteBrand (brandId:any){
@@ -21,7 +37,15 @@ const Brand = ({brandList}:Props) => {
       toast.success(deleteBrand.data.message)
       router.refresh();
 
-  }}catch(errors:any){
+  }
+  if (!deleteBrand.data.success) {
+      
+    toast.error(deleteBrand.data.message)
+   
+}
+
+
+}catch(errors:any){
     toast.error(errors.message)
 
   }
@@ -31,9 +55,9 @@ const Brand = ({brandList}:Props) => {
 
   
   return (
-    <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
-      <div className="text-lg font-extrabold flex justify-between dark:text-white text-black mb-4">Brand
-       <Link href={"/admin/forms/brand-form/add"} > <button className="bg-black dark:bg-white rounded-lg py-1 dark:text-black text-white text-base font-medium px-5">Add Brand</button></Link>
+    <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:py-7.5">
+      <div className="text-lg font-extrabold flex justify-between dark:text-white text-black mb-4">Brands
+       <Link href={"/admin/brands/add"} > <button className="bg-black dark:bg-white rounded-lg py-1 dark:text-black text-white text-base font-medium px-5">Add Brand</button></Link>
       </div>
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
@@ -56,7 +80,7 @@ const Brand = ({brandList}:Props) => {
           </thead>
           <tbody>
             
-            {brandList.map((brandItem:any, index:any) => (
+            {brandData.map((brandItem:any, index:any) => (
               <tr key={index}>
               
                 <td
@@ -85,7 +109,7 @@ const Brand = ({brandList}:Props) => {
                 <td
                   className={`border-[#eee] px-4 py-4 dark:border-dark-3 ${index === brandList.length - 1 ? "border-b-0" : "border-b"}`}
                 >
-                  <p className="text-dark dark:text-white">
+                  <p className="text-dark line-clamp-3 text-ellipsis dark:text-white">
                     {brandItem.description}
                   </p>
                 </td>
@@ -95,7 +119,7 @@ const Brand = ({brandList}:Props) => {
                 >
                   <div className="flex items-center justify-end space-x-3.5">
                     <button className="hover:text-primary">
-                      <Link href={`/admin/forms/brand-form/${brandItem._id}`}>
+                      <Link href={`/admin/brands/${brandItem._id}`}>
                     <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
@@ -107,7 +131,7 @@ const Brand = ({brandList}:Props) => {
                             stroke="currentColor"
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            stroke-width="2"
+                            stroke-width="1.5"
                           >
                             <path d="M7 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1" />
                             <path d="M20.385 6.585a2.1 2.1 0 0 0-2.97-2.97L9 12v3h3zM16 5l3 3" />
@@ -115,7 +139,13 @@ const Brand = ({brandList}:Props) => {
                         </svg>
                         </Link>
                     </button>
-                    <button onClick={()=>deleteBrand(brandItem._id)} className="hover:text-primary">
+
+                    <button
+                      onClick={() => setItemId(brandItem._id)}
+                      className="hover:text-primary "
+                    >
+                      {itemId === brandItem._id && <DeleteConfirmation deleteId={deleteBrand} id={brandItem._id} isOpen={itemId === brandItem._id} setIsOpen={setItemId} />}
+
                       <svg
                         className="fill-current"
                         width="20"
@@ -151,6 +181,25 @@ const Brand = ({brandList}:Props) => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="flex justify-between items-center mt-4">
+        <button
+          className="px-3 py-1 bg-black dark:bg-white text-white dark:text-black font-semibold rounded disabled:opacity-50"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+
+        <span >Page {currentPage} of {totalPages}</span>
+
+        <button
+          className="px-3 py-1 bg-black dark:bg-white text-white dark:text-black font-semibold rounded disabled:opacity-50"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

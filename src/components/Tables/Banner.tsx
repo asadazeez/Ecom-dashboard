@@ -1,44 +1,64 @@
-'use client'
+"use client";
 import { bannerApi } from "@/api/bannerApi";
 import { storageUrl } from "@/utilis/baseUrl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import DeleteConfirmation from "../DeleteComponent/DeleteConfirmationPopup";
 
-type Props ={
-  bannerList:any
-}
+type Props = {
+  bannerList: any;
+};
 
-const Banner = ({bannerList}:Props) => {
+const Banner = ({ bannerList }: Props) => {
+  const [itemId, setItemId] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
+  const totalPages = Math.ceil(bannerList.length / itemsPerPage);
+  const bannerData = bannerList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
+ 
+
   const router = useRouter();
 
-async function deleteBanner(bannerId:any){
-  try {
-    const deleteBanner = await bannerApi.deleteBanner(bannerId);
-if(deleteBanner.data.success){
-  toast.success(deleteBanner.data.message);
-  router.refresh()
-}
+  async function deleteBanner(bannerId: any) {
+    try {
+      const deleteBanner = await bannerApi.deleteBanner(bannerId);
 
-
-  } catch (error : any) {
-    toast.error(error.message);
-
-    
+      if (deleteBanner.data.success) {
+        toast.success(deleteBanner.data.message);
+        router.refresh();
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   }
-}
 
   return (
-    <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
-       <div className="text-lg font-extrabold flex justify-between dark:text-white text-black mb-4">Banner
-       <Link href={"/admin/forms/banner-form/add"}>  <button className="bg-black dark:bg-white rounded-lg dark:text-black text-white text-base py-1 font-medium px-5">Add Banner</button></Link>
+    <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:py-7.5">
+      <div className="mb-4 flex justify-between text-lg font-extrabold text-black dark:text-white">
+        Banners
+        <Link href={"/admin/banners/add"}>
+          {" "}
+          <button className="rounded-lg bg-black px-5 py-1 text-base font-medium text-white dark:bg-white dark:text-black">
+            Add Banner
+          </button>
+        </Link>
       </div>
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-[#F7F9FC] text-left dark:bg-dark-2">
-              <th  className="min-w-[220px] px-4 py-4 font-medium text-dark dark:text-white xl:pl-7.5">
+              <th className="min-w-[220px] px-4 py-4 font-medium text-dark dark:text-white xl:pl-7.5">
                 Image
               </th>
               <th className="min-w-[120px] px-4 py-4 font-medium text-dark dark:text-white">
@@ -47,40 +67,34 @@ if(deleteBanner.data.success){
               <th className="px-4 py-4 text-right font-medium text-dark dark:text-white xl:pr-7.5">
                 Actions
               </th>
-             
             </tr>
           </thead>
           <tbody>
-            {bannerList.map((Item:any, index:any) => (
-       
+            {bannerData.map((Item: any, index: any) => (
               <tr key={index}>
                 <td
                   className={`border-[#eee] px-4 py-4 dark:border-dark-3 xl:pl-7.5 ${index === bannerList.length - 1 ? "border-b-0" : "border-b"}`}
                 >
                   <Image
-                   src= {storageUrl +  Item.image}
-                   alt="banner Image"
-                   width={150}
-                   height={100}
+                    src={storageUrl + Item.image}
+                    alt="banner Image"
+                    width={150}
+                    height={100}
                   />
-                 
                 </td>
                 <td
                   className={`border-[#eee] px-4 py-4 dark:border-dark-3 xl:pl-7.5 ${index === bannerList.length - 1 ? "border-b-0" : "border-b"}`}
                 >
-                  <h5 className="text-dark dark:text-white">
-                    {Item.category}
-                  </h5>
-                 
+                  <h5 className="text-dark dark:text-white">{Item.category}</h5>
                 </td>
-                
+
                 <td
                   className={`border-[#eee] px-4 py-4 dark:border-dark-3 xl:pr-7.5 ${index === bannerList.length - 1 ? "border-b-0" : "border-b"}`}
                 >
                   <div className="flex items-center justify-end space-x-3.5">
-                  <button className="hover:text-primary">
-                  <Link href={`/admin/forms/banner-form/${Item._id}`}>
-                    <svg
+                    <button className="hover:text-primary ">
+                      <Link href={`/admin/banners/${Item._id}`}>
+                        <svg 
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
                           height="20"
@@ -91,16 +105,23 @@ if(deleteBanner.data.success){
                             stroke="currentColor"
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            stroke-width="2"
+                            stroke-width="1.5"
                           >
                             <path d="M7 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1" />
                             <path d="M20.385 6.585a2.1 2.1 0 0 0-2.97-2.97L9 12v3h3zM16 5l3 3" />
                           </g>
                         </svg>
-                        </Link>
+                      </Link>
                     </button>
-                   
-                    <button onClick={() => deleteBanner(Item._id) } className="hover:text-primary">
+                  
+                  
+                    <button
+                      onClick={() => setItemId(Item._id)}
+                      className="hover:text-primary "
+                    >
+                      
+                      {itemId === Item._id && <DeleteConfirmation deleteId={deleteBanner} id={Item._id} isOpen={itemId === Item._id} setIsOpen={setItemId} />}
+
                       <svg
                         className="fill-current"
                         width="20"
@@ -129,13 +150,32 @@ if(deleteBanner.data.success){
                         />
                       </svg>
                     </button>
-                   
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="flex justify-between items-center mt-4">
+        <button
+          className="px-3 py-1 bg-black dark:bg-white text-white dark:text-black font-semibold rounded disabled:opacity-50"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+
+        <span>Page {currentPage} of {totalPages}</span>
+
+        <button
+          className="px-3 py-1 bg-black dark:bg-white text-white dark:text-black font-semibold rounded disabled:opacity-50"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

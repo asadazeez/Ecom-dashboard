@@ -51,7 +51,7 @@ const BrandForm = () => {
       if (response.data.success) {
         toast.success(response.data.message)
         
-        router.push('/admin/tables/brand')
+        router.push('/admin/brands')
         router.refresh()
       }
     }catch(errors:any){
@@ -62,7 +62,7 @@ toast.error(errors.message)
 
   return (
     <>
-      <Breadcrumb pageName="BRAND FORM" />
+      <Breadcrumb pageName="Brand Form" innerPageName="Brands /" innerPageLink="/admin/brands/" />
 
       <div className=" gap-9 sm:grid-cols-2">
         <form onSubmit={handleSubmit(submitData)}>
@@ -85,7 +85,7 @@ toast.error(errors.message)
                     placeholder="Brand Name"
                     className="w-full rounded-[7px] border-[1.5px] border-stroke bg-transparent px-5.5 py-3 text-dark outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-gray-2 dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
                   />
-                  <p className="text-xs text-red-700">{errors.name?.message}</p>
+                  <p className="text-xs  text-red-700">{errors.name?.message}</p>
                 </div>
 
                 <div>
@@ -105,7 +105,7 @@ toast.error(errors.message)
                   <Typography variant='h6' sx={{ mb: 2.5 }}>
                     Image:
                     {!!errors.imageFile && (
-                      <span style={{ color: 'red', fontSize: '14px' }}>Invalid Image format {!!errors.imageFile}</span>
+                      <span style={{ color: 'red', fontSize: '14px',marginLeft:'2px' }}>Invalid Image format  or Image is Required  {!!errors.imageFile}</span>
                     )}
                   </Typography>
                   <Controller

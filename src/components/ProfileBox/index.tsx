@@ -66,7 +66,7 @@ const ProfileBox = () => {
       <form
         onSubmit={handleSubmit(submitData)}
         action="#"
-        className="bg rounded-lg bg-white p-9 py-10"
+        className="bg rounded-lg bg-white dark:bg-gray-dark p-9 py-10"
       >
         <div className="p-6.5">
           <InputGroup

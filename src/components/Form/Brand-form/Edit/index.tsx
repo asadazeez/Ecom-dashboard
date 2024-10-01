@@ -23,13 +23,14 @@ const Schema = z.object({
   name: z
   .string().trim().min(1, {message:'Minimum one character required'}).nonempty({message:"*Required"}),
   description: z.string(),
-  imageFile: z
+  imageFile:z.union([ z
   .any()
   .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
   .refine(
     (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
     "Only .jpg, .jpeg, .png and .webp formats are supported."
-  )
+  ),z.string(),
+]),
 });
 type TSchema = z.infer<typeof Schema>;
 
@@ -60,7 +61,7 @@ const BrandUpdateForm = ({BrandId,brand}:Props) => {
         
 
         
-        router.push('/admin/tables/brand')
+        router.push('/admin/brands')
         router.refresh()
 
       }
@@ -72,7 +73,7 @@ toast.error(errors.message)
 
   return (
     <>
-      <Breadcrumb pageName="BRAND UPDATE FORM" />
+      <Breadcrumb pageName="Brand Update Form" innerPageName="Brands /" innerPageLink="/admin/brands" />
 
       <div className=" gap-9 sm:grid-cols-2">
         <form onSubmit={handleSubmit(submitData)}>
@@ -117,7 +118,7 @@ toast.error(errors.message)
                   <Typography variant='h6' sx={{ mb: 2.5 }}>
                     Image:
                     {!!errors.imageFile && (
-                      <span style={{ color: 'red', fontSize: '14px' }}>Invalid Image format {!!errors.imageFile}</span>
+                      <span style={{ color: 'red', fontSize: '14px',marginLeft:'2px' }}>Invalid Image format  or Image is Required  {!!errors.imageFile}</span>
                     )}
                   </Typography>
                   <Controller
