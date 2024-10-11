@@ -1,9 +1,8 @@
 import Link from "next/link";
 import DarkModeSwitcher from "./DarkModeSwitcher";
-import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
-import Image from "next/image";
-import SearchForm from "@/components/Header/SearchForm";
+import IconSvg from "../../../public/images/logo/IconLogo"
+
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -12,7 +11,7 @@ const Header = (props: {
   return (
     <header className="sticky top-0 z-999 flex w-full border-b border-stroke bg-white dark:border-stroke-dark dark:bg-gray-dark">
       <div className="flex flex-grow items-center z-99 justify-between px-4 py-5 shadow-2 md:px-5 2xl:px-10">
-        <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
+        <div className="flex items-center lg:hidden">
           {/* <!-- Hamburger Toggle BTN --> */}
           <button
             aria-controls="sidebar"
@@ -57,12 +56,8 @@ const Header = (props: {
           {/* <!-- Hamburger Toggle BTN --> */}
 
           <Link className="block flex-shrink-0 lg:hidden" href="/">
-            <Image
-              width={100}
-              height={100}
-              src={"/images/logo/logo-icon.svg"}
-              alt="Logo"
-            />
+          <div className="h-[3rem] dark:text-white text-black mb-4 overflow-hidden">
+            <IconSvg className="size-20  "/></div>
           </Link>
         </div>
 

@@ -54,6 +54,7 @@ const ProductUpdateForm = ({ProductId,product,brands,category}:Props) => {
     const {
         register,
         handleSubmit,
+        reset,
         control,
         formState: { errors },
       } = useForm<TSchema>({ resolver: zodResolver(Schema),defaultValues:{
@@ -61,7 +62,6 @@ const ProductUpdateForm = ({ProductId,product,brands,category}:Props) => {
       
        
       } });
-      console.log('brandss',product)
       const submitData = async (data:any) => {
         try{
 
@@ -74,6 +74,7 @@ const ProductUpdateForm = ({ProductId,product,brands,category}:Props) => {
 
          router.push("/admin/products")
          router.refresh()
+         router.back()
        }
 
         }catch(errors:any){
@@ -172,7 +173,9 @@ const ProductUpdateForm = ({ProductId,product,brands,category}:Props) => {
                 </DropzoneWrapper>
                 <p className="text-red-700 text-xs">{errors.imageFile?.message?.toString()}</p>
 
+                <div className="flex gap-2">
               <button type="submit" className=" bg-black dark:bg-white dark:text-black text-white rounded-md py-1 font-semibold w-fit px-6" > UPDATE</button>
+              <button type="reset"   onClick={() => reset()} className=" bg-black dark:bg-white dark:text-black text-white rounded-md py-1 font-semibold w-fit px-[30px]" > RESET</button></div>
             </div>
           </div>
         </div>

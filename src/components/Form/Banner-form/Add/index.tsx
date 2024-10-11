@@ -37,6 +37,7 @@ const BannerForm = ({category}:Props) => {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
     
   } = useForm<TSchema>({ resolver: zodResolver(Schema) });
@@ -104,13 +105,10 @@ toast.error(errors.message)
                   />
                 </DropzoneWrapper>
                 <p className="text-red-700 text-xs">{errors.imageFile?.message?.toString()}</p>               
-                    <button
-                      type="submit"
-                      className=" w-fit rounded-md bg-black px-6 py-1 mt-4 font-semibold text-white dark:bg-white dark:text-black"
-                    >
-                      {" "}
-                      SUBMIT
-                    </button>
+                <div className="flex gap-2">
+              <button type="submit" className=" bg-black dark:bg-white dark:text-black text-white rounded-md py-1 font-semibold w-fit px-6" > SUBMIT</button>
+              <button type="reset"   onClick={() => reset()} className=" bg-black dark:bg-white dark:text-black text-white rounded-md py-1 font-semibold w-fit px-[30px]" > RESET</button></div>
+
               </div>
             </div>
           </div>

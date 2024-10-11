@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import DeleteConfirmation from "../DeleteComponent/DeleteConfirmationPopup";
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import Box from '@mui/material/Box';
+
 
 type Props ={
   brandList:any
@@ -15,18 +18,17 @@ type Props ={
 
 const Brand = ({brandList}:Props) => {
   const [itemId, setItemId] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
 
-  const totalPages = Math.ceil(brandList.length / itemsPerPage);
-  const brandData = brandList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  
 
-  const handlePageChange = (pageNumber: number) => {
-    if (pageNumber >= 1 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber);
-    }
-  };
+
+  const filteredBrands = brandList.filter((brandItem: any) =>
+    brandItem.brandname.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+ 
 
   const router = useRouter()
   
@@ -56,7 +58,26 @@ const Brand = ({brandList}:Props) => {
   
   return (
     <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:py-7.5">
-      <div className="text-lg font-extrabold flex justify-between dark:text-white text-black mb-4">Brands
+      <div className="text-lg font-extrabold flex justify-between dark:text-white text-black mb-4"><div><form className="max-w-md mx-auto">
+          <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
+            Search
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+              </svg>
+            </div>
+            <input
+              type="search"
+              id="default-search"
+              className="block w-full p-1 px-20  ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search Brands"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)} 
+            />
+          </div>
+        </form></div>
        <Link href={"/admin/brands/add"} > <button className="bg-black dark:bg-white rounded-lg py-1 dark:text-black text-white text-base font-medium px-5">Add Brand</button></Link>
       </div>
       <div className="max-w-full overflow-x-auto">
@@ -80,7 +101,7 @@ const Brand = ({brandList}:Props) => {
           </thead>
           <tbody>
             
-            {brandData.map((brandItem:any, index:any) => (
+            {filteredBrands.map((brandItem:any, index:any) => (
               <tr key={index}>
               
                 <td
@@ -181,25 +202,6 @@ const Brand = ({brandList}:Props) => {
             ))}
           </tbody>
         </table>
-      </div>
-      <div className="flex justify-between items-center mt-4">
-        <button
-          className="px-3 py-1 bg-black dark:bg-white text-white dark:text-black font-semibold rounded disabled:opacity-50"
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-
-        <span >Page {currentPage} of {totalPages}</span>
-
-        <button
-          className="px-3 py-1 bg-black dark:bg-white text-white dark:text-black font-semibold rounded disabled:opacity-50"
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
       </div>
     </div>
   );

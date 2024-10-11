@@ -38,6 +38,7 @@ const CategoryForm = () => {
         register,
         handleSubmit,
         control,
+        reset,
         formState: { errors },
       } = useForm<TSchema>({ resolver: zodResolver(Schema) });
       const submitData  = async (data:any) => {
@@ -124,8 +125,9 @@ toast.success(response.data.message)
                   />
                 </DropzoneWrapper>
                 <p className="text-red-700 text-xs">{errors.imageFile?.message?.toString()}</p>
-
+<div className="flex gap-2">
               <button type="submit" className=" bg-black dark:bg-white dark:text-black text-white rounded-md py-1 font-semibold w-fit px-6" > SUBMIT</button>
+              <button type="reset"   onClick={() => reset()} className=" bg-black dark:bg-white dark:text-black text-white rounded-md py-1 font-semibold w-fit px-[30px]" > RESET</button></div>
             </div>
           </div>
         </div>

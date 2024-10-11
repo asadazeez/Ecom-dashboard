@@ -10,20 +10,20 @@ const Categories = async () => {
   const categoryData = response.data.data.categories;
 
   return (
-    <div className=" mt-7 rounded-[10px] bg-white px-10 text-center   pb-8 pt-3 text-xl font-bold text-dark dark:bg-slate-900 dark:text-white">
+    <div className=" mt-7 rounded-[10px] bg-white px-10 text-center   pb-8 pt-8 text-xl font-bold text-dark dark:bg-slate-900 dark:text-white">
       CATEGORIES
       <div className="grid grid-cols-1 justify-items-center gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         {categoryData.map((category: any, index: number) => (
           <Link key={index} href={`/admin/categories/view/${category._id}/products`}>
           <div
             
-            className="relative mt-6 flex h-65 w-49  items-center justify-center rounded-lg  p-6 shadow-3 dark:shadow-none "
+            className="relative mt-6 flex h-65 w-49  items-center justify-center rounded-lg  p-6 shadow-3 dark:shadow-none  transition-transform duration-300 ease-in-out transform hover:scale-105 "
           >
             <Image
               src={storageUrl + category.image}
               alt="Category Image"
               fill
-              className=" rounded-lg object-cover  "
+              className=" rounded-lg object-cover"
             />
 
             <div className=" flex    justify-center">

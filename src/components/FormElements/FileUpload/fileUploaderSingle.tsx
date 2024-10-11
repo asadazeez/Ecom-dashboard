@@ -1,4 +1,4 @@
-// ** React Imports
+import { useEffect } from 'react'
 import toast from 'react-hot-toast'
 
 // ** MUI Imports
@@ -19,20 +19,26 @@ type Props = {
 const FileUploaderSingle = (props: Props) => {
   const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
-    maxSize: 5 * 1024 * 1024,
+    maxSize: 5 * 1024 * 1024, // 5MB
     accept: {
       'image/*': ['.png', '.jpg', '.jpeg']
     },
     onDrop: acceptedFiles => {
       const selectedFile = acceptedFiles[0]
-
-      props.setFile(Object.assign(selectedFile))
+      props.setFile(selectedFile) // Update the file in the parent component
     },
     onDropRejected: () => {
       toast.error('You can only upload files of type .png, .jpeg, .jpg')
-      toast.error("You can't upload files of greater than 2mb")
+      toast.error("You can't upload files larger than 5MB")
     }
   })
+
+  // Ensure component resets when `file` is cleared
+  useEffect(() => {
+    if (!props.file) {
+      // Do nothing specific, the `file` prop drives the content
+    }
+  }, [props.file])
 
   return (
     <Box

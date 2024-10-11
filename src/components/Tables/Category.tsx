@@ -13,11 +13,16 @@ type Props ={
 
 const Category = ({categoryList}:Props) => {
   const [itemId, setItemId] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const totalPages = Math.ceil(categoryList.length / itemsPerPage);
-  const categoryData = categoryList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const filteredCategories = categoryList.filter((categoryItem:any) =>
+  categoryItem.categoryname.toLowerCase().includes(searchTerm.toLowerCase()))
+
+  const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
+  const categoryData = filteredCategories.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handlePageChange = (pageNumber: number) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -59,7 +64,28 @@ const Category = ({categoryList}:Props) => {
   
   return (
     <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:py-7.5">
-      <div className="text-lg font-extrabold flex justify-between dark:text-white text-black mb-4">Categories
+      <div className="text-lg font-extrabold flex justify-between dark:text-white text-black mb-4">
+<div><form className="max-w-md mx-auto">
+          <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
+            Search
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+              </svg>
+            </div>
+            <input
+              type="search"
+              id="default-search"
+              className="block w-full p-1 px-20 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search Categories"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)} 
+            />
+          </div>
+        </form></div>
+
        <Link href={"/admin/categories/add/"} > <button className="bg-black py-1 dark:bg-white rounded-lg dark:text-black text-white text-base font-medium px-5">Add Category</button></Link>
       </div>
       <div className="max-w-full overflow-x-auto">

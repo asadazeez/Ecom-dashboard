@@ -52,6 +52,7 @@ const CategoryUpdateForm = ({CategoryId,category}:Props) => {
         register,
         handleSubmit,
         control,
+        reset,
         
         formState: { errors },
       } = useForm<TSchema>({ resolver: zodResolver(Schema),defaultValues:{name:category.
@@ -81,7 +82,7 @@ toast.success(response.data.message)
   return (
     
     <>
-      <Breadcrumb pageName="Category Update Form " innerPageName="Categories /" innerPageLink="/admin/categories/" />
+      <Breadcrumb pageName="Update Form " innerPageName="Categories /" innerPageLink="/admin/categories/" />
 
       <div className=" gap-9 sm:grid-cols-2">
         <form onSubmit={handleSubmit(submitData)}>
@@ -141,7 +142,9 @@ toast.success(response.data.message)
                 </DropzoneWrapper>
                 <p className="text-red-700 text-xs">{errors.imageFile?.message?.toString()}</p>
 
+                <div className="flex gap-2">
               <button type="submit" className=" bg-black dark:bg-white dark:text-black text-white rounded-md py-1 font-semibold w-fit px-6" > UPDATE</button>
+              <button type="reset"   onClick={() => reset()} className=" bg-black dark:bg-white dark:text-black text-white rounded-md py-1 font-semibold w-fit px-[30px]" > RESET</button></div>
             </div>
           </div>
         </div>

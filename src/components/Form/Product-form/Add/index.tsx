@@ -46,6 +46,7 @@ const ProductForm = ({brands,category}:Props) => {
     const {
         register,
         handleSubmit,
+        reset,
         control,
         formState: { errors },
       } = useForm<TSchema>({ resolver: zodResolver(Schema) });
@@ -120,6 +121,7 @@ const ProductForm = ({brands,category}:Props) => {
                 <input
                 {...register('price')}
                   type="number"
+                  
                   placeholder="Product Price"
                   className="w-full rounded-[7px] border-[1.5px] border-stroke bg-transparent px-5.5 py-3 text-dark outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-gray-2 dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
                 />
@@ -155,7 +157,9 @@ const ProductForm = ({brands,category}:Props) => {
                 </DropzoneWrapper>
                 <p className="text-red-700 text-xs">{errors.imageFile?.message?.toString()}</p>
 
+                <div className="flex gap-2">
               <button type="submit" className=" bg-black dark:bg-white dark:text-black text-white rounded-md py-1 font-semibold w-fit px-6" > SUBMIT</button>
+              <button type="reset"   onClick={() => reset()} className=" bg-black dark:bg-white dark:text-black text-white rounded-md py-1 font-semibold w-fit px-[30px]" > RESET</button></div>
             </div>
           </div>
         </div>
