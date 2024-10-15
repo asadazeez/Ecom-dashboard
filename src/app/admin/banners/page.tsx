@@ -9,8 +9,8 @@ import Banner from "@/components/Tables/Banner";
 import { bannerApi } from "@/api/bannerApi";
 
 export const metadata: Metadata = {
-  title: "Next.js Tables Page | NextAdmin - Next.js Dashboard Kit",
-  description: "This is Next.js Tables page for NextAdmin Dashboard Kit",
+  title: "E-Shop Tables Page | NextAdmin - E-Shop Dashboard Kit",
+  description: "This is E-Shop Tables page for NextAdmin Dashboard Kit",
 };
 
 async function getAllBanner(){

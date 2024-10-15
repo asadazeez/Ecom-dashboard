@@ -5,7 +5,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title:
-    "E-shop Dashboard Page | NextAdmin - Next.js Dashboard Kit",
+    "E-shop Dashboard Page | E-shop - Next.js Dashboard Kit",
   description: "This is E-shop Home page for NextAdmin Dashboard Kit",
 };
 
